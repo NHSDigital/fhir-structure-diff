@@ -9,11 +9,11 @@ def render_diff(args):
     left, l_version, l_name, l_defined_type = sdr.read_profile(args.leftprofile)
     right, r_version, r_name, r_defined_type = sdr.read_profile(args.rightprofile)
 
-    element_level_diff = pd.element_diff(left, right)
-    component_level_diff = pd.component_diff(left, right)
-
     l_version, r_version = get_versions(l_version, r_version, args)
     template = get_template(args)
+
+    element_level_diff = pd.element_diff(left, right)
+    component_level_diff = pd.component_diff(left, right, l_version)  # TODO support multiple versions
 
     diff_template = open(template).read()
     t = Template(diff_template)

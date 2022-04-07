@@ -16,63 +16,63 @@ resource_cache = {}
 #       For simplicity leaving this for now
 
 
-def get_base_component(element_operands, component):
+def get_base_component(element_operands, component, version):
 
-    base_component = check_base_definition(element_operands, component)
+    base_component = check_base_definition(element_operands, component, version)
     if base_component != {}:
         return base_component
 
-    base_component = check_defined_base_path(element_operands, component)
+    base_component = check_defined_base_path(element_operands, component, version)
     if base_component != {}:
         return base_component
 
-    base_component = check_parent_element(element_operands, component)
+    base_component = check_parent_element(element_operands, component, version)
     if base_component != {}:
         return base_component
 
     # Finally
-    return check_parent_element_type(element_operands, component)
+    return check_parent_element_type(element_operands, component, version)
 
 
-def check_base_definition(element_operands, component):
+def check_base_definition(element_operands, component, version):
     element_key = str(*element_operands.keys())
     resource_type = element_key.split('.')[0]
-    base_definition = json.loads(get_definition(resource_type, '3'))  # TODO pull fhirVersion out of operands
+    base_definition = json.loads(get_definition(resource_type, version))  # TODO pull fhirVersion out of operands
 
     return search_definition(base_definition, element_key, component)
 
 
-def check_defined_base_path(element_operands, component):
+def check_defined_base_path(element_operands, component, version):
     element_base_path = get_element_base_path(element_operands)
 
     if element_base_path:
         resource_type = element_base_path['path'].split('.')[0]
-        base_element_definition = json.loads(get_definition(resource_type, '3'))
+        base_element_definition = json.loads(get_definition(resource_type, version))
         return search_definition(base_element_definition, element_base_path['path'], component)
 
     return {}
 
 
-def check_parent_element(element_operands, component):
+def check_parent_element(element_operands, component, version):
     element_key = str(*element_operands.keys())
     resource_type = element_key.split('.')[-2]
-    parent_element_definition = json.loads(get_definition(resource_type, '3'))
+    parent_element_definition = json.loads(get_definition(resource_type, version))
 
     sub_element = resource_type + '.' + element_key.split('.')[-1]
     return search_definition(parent_element_definition, sub_element, component)
 
 
-def check_parent_element_type(element_operands, component):
+def check_parent_element_type(element_operands, component, version):
     element_key = str(*element_operands.keys())
     resource_type = element_key.split('.')[0]
-    base_definition = json.loads(get_definition(resource_type, '3'))
+    base_definition = json.loads(get_definition(resource_type, version))
 
     parent_element = element_key.rsplit('.', 1)[0]
     element_base_definition = search_definition(base_definition, parent_element, 'type')
     for type_entry in element_base_definition:
         if 'code' in type_entry:
             resource_type = type_entry['code']
-            sub_element_base_definition = json.loads(get_definition(resource_type, '3'))  # TODO pull fhirVersion out of
+            sub_element_base_definition = json.loads(get_definition(resource_type, version))
             sub_element = resource_type + '.' + element_key.split('.')[-1]
             element_base_component = search_definition(sub_element_base_definition, sub_element, component)
             # First match, return.  TODO not sure about this, test it throughly...
@@ -151,7 +151,7 @@ def get_profile_url(resource_type, version):
         4: 'R4/'
     }
 
-    fhir_version = version_map.get(int(version), None)
+    fhir_version = version_map.get(int(version[0]), None)
     if not fhir_version:
         raise ValueError('Unknown FHIR version: ' + version)
 

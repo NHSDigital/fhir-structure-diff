@@ -26,13 +26,13 @@ def element_diff(left, right):
     return list_diff(cc_element_list, gpc_element_list)
 
 
-def component_diff(left, right):
+def component_diff(left, right, version):
     left_elements = extract_elements(left)
     right_elements = extract_elements(right)
-    return detailed_diff(left_elements, right_elements)
+    return detailed_diff(left_elements, right_elements, version)
 
 
-def detailed_diff(left, right):
+def detailed_diff(left, right, version):
     elements_table = align_elements(left, right)
     diff = dict()
 
@@ -42,12 +42,12 @@ def detailed_diff(left, right):
         components_table = align_elements(left_element, right_element)
 
         for component in components_table:
-            diff |= component_level_diff(element_operands, component)
+            diff |= component_level_diff(element_operands, component, version)
 
     return diff
 
 
-def component_level_diff(element, component):
+def component_level_diff(element, component, version):
     element_key = str(*element.keys())
     component_results = {}
     component_key = str(*component.keys())
@@ -55,7 +55,7 @@ def component_level_diff(element, component):
     if component_key not in IGNORED_COMPONENTS:
         left_component = tuple(*component.values())[0]
         right_component = tuple(*component.values())[1]
-        base_component = get_base_component(element, component_key)
+        base_component = get_base_component(element, component_key, version)
         component_results = {element_key: base_component_diff(component_key,
                                                               left_component,
                                                               right_component,
