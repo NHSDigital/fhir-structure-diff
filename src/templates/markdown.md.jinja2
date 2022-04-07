@@ -1,0 +1,45 @@
+# FHIR Profile Diff  
+**Base profile:** {{resource_type}}
+|Lefthand Profile|Version|
+|----|----|
+|{{left_profile}}|{{left_version}}|
+
+|Righthand Profile|Version|
+|----|----|
+|{{right_profile}}|{{right_version}}|
+---
+# Element level diff  
+**Profiles:**
+|{{left_profile}}|{{right_profile}}|
+|----|----|
+**Diff:**
+```diff  
+{{element_level_diff}}
+```
+---
+# Component level diff  
+{% for element in component_results %}
+## Element: *{{element}}*  
+{% for component in component_results[element] %}
+### Component: *{{component}}*  
+|{{left_profile}}|{{right_profile}}|
+|----|----|
+|{{ component_results[element][component]['table_result'][0] }}|{{ component_results[element][component]['table_result'][1] }}|
+{% if component_results[element][component]['match'] %}
+#### Match  
+```json  
+{{ component_results[element][component]['match'] }}  
+```  
+{% endif %}
+{% if component_results[element][component]['component_diff'] %}
+#### Diff  
+```diff  
+{{ component_results[element][component]['component_diff'] }}  
+```  
+{% endif %}
+{% if component_results[element][component]['base'] %}
+#### Base  
+{{ component_results[element][component]['base'] }}  
+{% endif %}
+{% endfor %}
+{% endfor %}
