@@ -3,7 +3,7 @@ A tool to provide a simple diff of two profiles.  The diff all provides context 
 
 
 ## WIP
-Currently supports diff same versions.  Also possible to use a different Jinja2 template for the output.  Fetches bases defintions from web, so needs a live connection.
+Currently supports diff same versions, but only minimally tested.  Also possible to use a different Jinja2 template for the output.  Fetches bases defintions from web, so needs a live connection.
 
 From the root directory.  Example usage:
 
