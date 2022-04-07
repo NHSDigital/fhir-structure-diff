@@ -28,11 +28,10 @@ Unit tests
 Extend to handle different versions
 
 
-# Example output for above usage
+## Example output below for above usage
 
 Had to include in the README.md directly as github don't support anything nice to include content of another file as a relative link :(
 
----
 
 # FHIR Profile Diff  
 **Base profile:** AllergyIntolerance
