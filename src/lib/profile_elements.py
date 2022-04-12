@@ -40,6 +40,11 @@ def add_snapshot_elements_to_diff(profile, diff_elements) -> dict:
 # If id in left and right match, pop elements off each list into tuple and append to output list
 # Non-matching elements in left and right input lists appended to output list with corresponding empty dict in tuple
 def align_elements(left, right):
+    if not isinstance(left, dict) or not isinstance(right, dict):
+        raise TypeError('Unexpected data in profile_elements.align_elements.'
+                        '\n\nLeft is a ' + str(type(left)) + '. Contents:\n\n' + str(left) +
+                        '\n\nRight is a ' + str(type(left)) + '. Contents:\n\n' + str(right))
+
     copy_left = left.copy()
     copy_right = right.copy()
 
@@ -57,36 +62,6 @@ def align_elements(left, right):
         diff_table.append({r: ({}, copy_right[r])})
 
     return diff_table
-
-
-def split_elements_and_slices(elements_table) -> (list, list):
-    base_elements = []
-    slice_elements = []
-
-    for e in elements_table:
-        if ":" in str(list(e.keys())[0]):
-            slice_elements.append(e)
-        else:
-            base_elements.append(e)
-
-    return base_elements, slice_elements
-
-
-def order_dict(dictionary):
-    result = {}
-    for k, v in sorted(dictionary.items()):
-        if isinstance(v, dict):
-            result[k] = order_dict(v)
-        else:
-            result[k] = sorted(v)
-    return result
-
-
-def strip_list(data):
-    if not data:
-        return {}
-    else:
-        return reduce(lambda a, b: {**a, **b}, data)
 
 
 def is_valid_dict(data):
