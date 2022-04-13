@@ -2,3 +2,5 @@
 .idea*
 *.swp
 *.swo
+*.coverage
+*markdown.md*

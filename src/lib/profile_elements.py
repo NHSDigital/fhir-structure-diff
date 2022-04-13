@@ -71,10 +71,6 @@ def is_valid_dict(data):
     if not is_or_contains_dict(data):
         return False
 
-    try:
-        json.loads(json.dumps(data))
-    except ValueError as e:
-        return False
     return True
 
 

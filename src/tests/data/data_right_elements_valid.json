@@ -1,0 +1,45 @@
+{
+  "AllergyIntolerance.extension": {
+    "id": "AllergyIntolerance.extension",
+    "path": "AllergyIntolerance.extension",
+    "slicing": {
+      "discriminator": [
+        {
+          "type": "value",
+          "path": "url"
+        }
+      ],
+      "rules": "open"
+    }
+  },
+  "AllergyIntolerance.extension:encounter": {
+    "id": "AllergyIntolerance.extension:encounter",
+    "path": "AllergyIntolerance.extension",
+    "sliceName": "encounter",
+    "max": "*",
+    "type": [
+      {
+        "code": "Extension",
+        "profile": "http://hl7.org/fhir/StructureDefinition/encounter-associatedEncounter-RIGHT"
+      }
+    ]
+  },
+  "AllergyIntolerance.extension:allergyEnd": {
+    "id": "AllergyIntolerance.extension:allergyEnd",
+    "path": "AllergyIntolerance.extension",
+    "sliceName": "allergyEnd",
+    "max": "1",
+    "type": [
+      {
+        "code": "Extension",
+        "profile": "https://fhir.nhs.uk/STU3/StructureDefinition/Extension-CareConnect-GPC-AllergyIntoleranceEnd-1"
+      }
+    ]
+  },
+  "AllergyIntolerance.identifier.system": {
+    "id": "AllergyIntolerance.identifier.system",
+    "path": "AllergyIntolerance.identifier.system",
+    "min": 1
+  }
+}
+

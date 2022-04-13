@@ -1,0 +1,51 @@
+{
+  "AllergyIntolerance.extension": {
+    "id": "AllergyIntolerance.extension",
+    "path": "AllergyIntolerance.extension",
+    "slicing": {
+      "discriminator": [
+        {
+          "type": "value",
+          "path": "url"
+        }
+      ],
+      "rules": "closed"
+    }
+  },
+  "AllergyIntolerance.extension:encounter": {
+    "id": "AllergyIntolerance.extension:encounter",
+    "path": "AllergyIntolerance.extension",
+    "sliceName": "encounter",
+    "max": "1",
+    "type": [
+      {
+        "code": "Extension",
+        "profile": "http://hl7.org/fhir/StructureDefinition/encounter-associatedEncounter-LEFT"
+      }
+    ]
+  },
+  "AllergyIntolerance.extension:allergyEnd": {
+    "id": "AllergyIntolerance.extension:allergyEnd",
+    "path": "AllergyIntolerance.extension",
+    "sliceName": "allergyEnd",
+    "max": "1",
+    "type": [
+      {
+        "code": "Extension",
+        "profile": "https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-AllergyIntoleranceEnd-1"
+      }
+    ]
+  },
+  "AllergyIntolerance.extension:evidence": {
+    "id": "AllergyIntolerance.extension:evidence",
+    "path": "AllergyIntolerance.extension",
+    "sliceName": "evidence",
+    "max": "1",
+    "type": [
+      {
+        "code": "Extension",
+        "profile": "https://fhir.hl7.org.uk/STU3/StructureDefinition/Extension-CareConnect-Evidence-1"
+      }
+    ]
+  }
+}

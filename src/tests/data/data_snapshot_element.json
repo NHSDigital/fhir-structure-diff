@@ -1,0 +1,18 @@
+{
+  "resourceType": "StructureDefinition",
+  "snapshot": {
+    "element": [
+      {
+        "id": "BasicTest",
+        "path": "This element and others not required"
+      },
+      {
+        "id": "BasicTest.id",
+        "other": "This key wouldn't exist"
+      },
+      {
+        "id": "BasicTest.id.3rdlevel"
+      }
+    ]
+  }
+}
