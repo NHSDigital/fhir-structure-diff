@@ -10,7 +10,7 @@ def read_profile(filename):
     input_file_extension = os.path.splitext(filename)[1]
 
     if input_file_extension.lower() == '.json':
-        profile = read_json(filename)
+        profile = json.load(open(filename))
         # Must at least have a differential
         check_profile(profile, 'differential')
         return profile, *get_profile_meta(profile)
@@ -25,29 +25,16 @@ def read_profile(filename):
         raise TypeError('Unrecognised file extension: ' + input_file_extension)
 
 
-def read_json(filename):
-    try:
-        json_str = json.load(open(filename))
-
-    except ValueError as e:
-        raise ValueError(filename + ' is not value json.  Exception: + ' + str(e))
-
-    except TypeError as e:
-        raise TypeError(filename + ' cause a TypeError when trying to load it as a JSON file.  '
-                                   'Exception: + ' + str(e))
-    return json_str
-
-
 def check_profile(profile, view):
     if not isinstance(profile, dict):
         raise ValueError('Unexpected data types for element diff.\n\nProfile -> ' + str(profile))
 
-    if view not in profile:
-        raise ValueError('No ' + view + 'section found profile.\n\nProfile -> ' +
+    if view not in profile.keys():
+        raise ValueError('No ' + str(view) + 'section found profile.\n\nProfile -> ' +
                          json.dumps(profile, indent=2))
 
     if 'element' not in profile[view]:
-        raise ValueError('No elements in ' + view + ' section.\n\nProfile -> ' +
+        raise ValueError('No elements in ' + str(view) + ' section.\n\nProfile -> ' +
                          json.dumps(profile, indent=2))
 
 

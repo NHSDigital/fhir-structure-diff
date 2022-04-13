@@ -7,9 +7,19 @@ DATA_DIR = TEST_DIR + '/../data'
 
 
 @pytest.fixture
+def data_dir():
+    return DATA_DIR
+
+
+@pytest.fixture
 def data_allergyintolerance_stu3_base_profile() -> dict:
     test_data = open(DATA_DIR + '/allergyintolerance.profile.json')
     return json.load(test_data)
+
+
+@pytest.fixture
+def data_allergyintolerance_stu3_meta() -> tuple:
+    return '3.0.2', 'AllergyIntolerance', 'AllergyIntolerance'
 
 
 @pytest.fixture
@@ -258,3 +268,15 @@ def data_extract_diff_elements_valid():
 def data_diff_elements_valid():
     test_data = open(DATA_DIR + '/data_diff_elements_valid.json')
     return json.load(test_data)
+
+
+@pytest.fixture(params=[
+    lazy_fixture('data_diff_elements_valid'),
+    lazy_fixture('data_extract_diff_elements_valid'),
+    lazy_fixture('data_snapshot_element'),
+    lazy_fixture('data_snapshot_element_empty'),
+    lazy_fixture('data_right_elements_valid'),
+    lazy_fixture('data_left_elements_valid')
+])
+def data_dicts(request):
+    return request.param
