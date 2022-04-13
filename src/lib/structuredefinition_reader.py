@@ -3,7 +3,7 @@ import os
 
 # Really useful package for converting xml to a dict, but additional logic will be needed to end up
 # with the same format as a straight json, given differences in naming e.g. resourceType
-#import xmltodict
+# import xmltodict
 
 
 def read_profile(filename):
@@ -39,7 +39,7 @@ def read_json(filename):
 
 
 def check_profile(profile, view):
-    if type(profile) is not dict:
+    if not isinstance(profile, dict):
         raise ValueError('Unexpected data types for element diff.\n\nProfile -> ' + str(profile))
 
     if view not in profile:
@@ -52,14 +52,14 @@ def check_profile(profile, view):
 
 
 def get_fhir_version(profile):
-    if 'fhirVersion' in profile:
+    if isinstance(profile, dict) and 'fhirVersion' in profile:
         return profile['fhirVersion']
 
     return None
 
 
 def get_profile_name(profile):
-    if 'name' not in profile:
+    if not isinstance(profile, dict) or 'name' not in profile:
         raise ValueError('No name in profile.\n\nProfile -> ' +
                          json.dumps(profile, indent=2))
 
@@ -67,7 +67,7 @@ def get_profile_name(profile):
 
 
 def get_profile_type(profile):
-    if 'type' not in profile:
+    if not isinstance(profile, dict) or 'type' not in profile:
         raise ValueError('No defined type in profile.\n\nProfile -> ' +
                          json.dumps(profile, indent=2))
 

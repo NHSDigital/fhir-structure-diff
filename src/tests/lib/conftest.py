@@ -3,7 +3,7 @@ from pytest_lazyfixture import lazy_fixture
 import os, json
 
 TEST_DIR = os.path.dirname(os.path.realpath(__file__))
-DATA_DIR = TEST_DIR + '/../../data'
+DATA_DIR = TEST_DIR + '/../data'
 
 
 @pytest.fixture
@@ -34,8 +34,13 @@ def data_snapshot_element_choices() -> dict:
     return json.load(test_data)
 
 
-@pytest.fixture(params=[[], None])
+@pytest.fixture(params=[[], {}, None])
 def data_input_empty(request):
+    return request.param
+
+
+@pytest.fixture(params=[[], None])
+def data_input_empty_no_dict(request):
     return request.param
 
 
@@ -55,6 +60,14 @@ def data_primitive_invalid(request):
     lazy_fixture('data_primitive_invalid')
 ])
 def data_invalid(request):
+    return request.param
+
+
+@pytest.fixture(params=[
+    lazy_fixture('data_input_empty_no_dict'),
+    lazy_fixture('data_primitive_invalid')
+])
+def data_invalid_no_empty_dict(request):
     return request.param
 
 

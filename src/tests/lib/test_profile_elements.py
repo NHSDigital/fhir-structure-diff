@@ -1,6 +1,6 @@
 import pytest
 
-from ....lib import profile_elements
+from ...lib import profile_elements
 
 
 def test_search_list_for_dict(data_contains_dict):
@@ -66,9 +66,9 @@ def test_align_elements_valid(data_left_elements_valid,
     assert output_data == expected_data
 
 
-def test_align_elements_invalid(data_invalid):
+def test_align_elements_invalid(data_invalid_no_empty_dict):
     with pytest.raises(TypeError) as exception_info:
-        profile_elements.align_elements(data_invalid, data_invalid)
+        profile_elements.align_elements(data_invalid_no_empty_dict, data_invalid_no_empty_dict)
     assert 'Unexpected data in profile_elements.align_elements' in str(exception_info)
 
 
