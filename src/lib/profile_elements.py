@@ -1,5 +1,4 @@
 import json
-from functools import reduce
 
 
 def extract_elements(profile) -> list:

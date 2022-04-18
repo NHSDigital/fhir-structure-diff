@@ -76,4 +76,3 @@ def test_read_profile_unrecognised_file_type():
     with pytest.raises(TypeError) as exception_info:
         structuredefinition_reader.read_profile('unknowm.filetype')
     assert 'Unrecognised file extension' in str(exception_info)
-    

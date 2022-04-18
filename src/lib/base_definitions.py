@@ -138,20 +138,28 @@ def download_definition(resource_type, version):
         return resource_cache[resource_type + version]
     else:
         # requests will have raised an exception on a connection error, so this just
-        # stops attempts to download invalid types
+        # stops attempts to download invalid types by storing an empty json object
         resource_cache[resource_type + version] = '{}'
         return resource_cache[resource_type + version]
 
 
 def get_profile_url(resource_type, version):
+    if not resource_type or \
+            not version or \
+            not str(version)[0].isnumeric() or \
+            not isinstance(resource_type, str) or \
+            not isinstance(version, str):
+        raise ValueError('Unknown FHIR version and resourceType\nVersion: ' +
+                         str(version) + ', resourceType: ' + str(resource_type))
+
     version_map = {
-        1: 'DSTU1/',
-        2: 'DSTU2/',
+        0: 'DSTU1/',
+        1: 'DSTU2/',
         3: 'STU3/',
         4: 'R4/'
     }
-
     fhir_version = version_map.get(int(version[0]), None)
+
     if not fhir_version:
         raise ValueError('Unknown FHIR version: ' + version)
 

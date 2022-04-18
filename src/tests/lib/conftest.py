@@ -59,7 +59,9 @@ def data_input_empty_no_dict(request):
     123,
     True,
     False,
-    ('not', 'json')
+    ('not', 'json'),
+    ''
+    '2.0.1'
 ])
 def data_primitive_invalid(request):
     return request.param

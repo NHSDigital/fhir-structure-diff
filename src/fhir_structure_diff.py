@@ -9,7 +9,6 @@ def render_diff(args):
     left, l_version, l_name, l_defined_type = sdr.read_profile(args.leftprofile)
     right, r_version, r_name, r_defined_type = sdr.read_profile(args.rightprofile)
 
-    l_version, r_version = get_versions(l_version, r_version, args)
     template = get_template(args)
 
     element_level_diff = pd.element_diff(left, right)
@@ -39,7 +38,7 @@ def get_args():
     # management for finer control of the base versions
     parser.add_argument("-lv", "--leftversion", type=int, help="Base FHIR (only major) version of left-hand profile.")
     parser.add_argument("-rv", "--rightversion", type=int, help="Base FHIR (only major) version of right-hand profile.")
-    parser.add_argument("-t", "--template", type=str, help="Jinja2 template.  Provide custom template for output."
+    parser.add_argument("-t", "--template", type=str, help="Jinja2 template.  Provide custom template for output. "
                                                            "Name before extension of template will be output filename")
 
     return parser.parse_args()
