@@ -18,6 +18,12 @@ def data_allergyintolerance_stu3_base_profile() -> dict:
 
 
 @pytest.fixture
+def data_domainresource_stu3_base_profile() -> dict:
+    test_data = open(DATA_DIR + '/domainresource.profile.json')
+    return json.load(test_data)
+
+
+@pytest.fixture
 def data_allergyintolerance_stu3_meta() -> tuple:
     return '3.0.2', 'AllergyIntolerance', 'AllergyIntolerance'
 
@@ -261,6 +267,101 @@ def data_left_right_elements_aligned_valid():
 
 
 @pytest.fixture
+def data_left_right_elements_operands_left_base_path():
+    return \
+        {
+            "AllergyIntolerance.extension": (
+                {
+                    "id": "AllergyIntolerance.extension",
+                    "path": "AllergyIntolerance.extension",
+                    "slicing": {
+                        "discriminator": [{"type": "value", "path": "url"}],
+                        "rules": "open",
+                    },
+                    "base": {"path": "DomainResource.extension", "min": 0, "max": "*"},
+                },
+                {
+                    "id": "AllergyIntolerance.extension",
+                    "path": "AllergyIntolerance.extension",
+                    "slicing": {
+                        "discriminator": [{"type": "value", "path": "url"}],
+                        "rules": "open",
+                    },
+                    "base": {"path": "DomainResource.extension", "min": 0, "max": "*"},
+                },
+            )
+        }
+
+
+@pytest.fixture
+def data_left_right_elements_operands_right_base_path():
+    return \
+        {
+            "AllergyIntolerance.extension": (
+                {
+                    "id": "AllergyIntolerance.extension",
+                    "path": "AllergyIntolerance.extension",
+                    "slicing": {
+                        "discriminator": [{"type": "value", "path": "url"}],
+                        "rules": "open",
+                    }
+                },
+                {
+                    "id": "AllergyIntolerance.extension",
+                    "path": "AllergyIntolerance.extension",
+                    "slicing": {
+                        "discriminator": [{"type": "value", "path": "url"}],
+                        "rules": "open",
+                    },
+                    "base": {"path": "DomainResource.extension", "min": 0, "max": "*"},
+                },
+            )
+        }
+
+
+@pytest.fixture
+def data_left_right_elements_operands_non_matching_base_path():
+    return \
+        {
+            "AllergyIntolerance.extension": (
+                {
+                    "id": "AllergyIntolerance.extension",
+                    "path": "AllergyIntolerance.extension",
+                    "slicing": {
+                        "discriminator": [{"type": "value", "path": "url"}],
+                        "rules": "open",
+                    },
+                    "base": {"path": "non_matching_resource.extension", "min": 0, "max": "*"},
+                },
+                {
+                    "id": "AllergyIntolerance.extension",
+                    "path": "AllergyIntolerance.extension",
+                    "slicing": {
+                        "discriminator": [{"type": "value", "path": "url"}],
+                        "rules": "open",
+                    },
+                    "base": {"path": "DomainResource.extension", "min": 0, "max": "*"},
+                },
+            )
+        }
+
+
+@pytest.fixture(params=[
+    lazy_fixture('data_left_right_elements_operands_left_base_path'),
+    lazy_fixture('data_left_right_elements_operands_right_base_path')
+])
+def data_left_right_elements_operands_base_path(request):
+    return request.param
+
+
+@pytest.fixture(params=[
+    lazy_fixture('data_left_right_elements_aligned_valid')
+])
+def data_left_right_elements_operands_no_base_path(request):
+    return request.param[0]
+
+
+@pytest.fixture
 def data_extract_diff_elements_valid():
     test_data = open(DATA_DIR + '/data_extract_diff_elements_valid.json')
     return json.load(test_data)
@@ -282,3 +383,6 @@ def data_diff_elements_valid():
 ])
 def data_dicts(request):
     return request.param
+
+# 'slicing'
+# 'AllergyIntolerance.extension'

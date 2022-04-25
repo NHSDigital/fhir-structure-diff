@@ -22,16 +22,7 @@ def get_base_component(element_operands, component, version):
     if base_component != {}:
         return base_component
 
-    base_component = check_defined_base_path(element_operands, component, version)
-    if base_component != {}:
-        return base_component
-
-    base_component = check_parent_element(element_operands, component, version)
-    if base_component != {}:
-        return base_component
-
-    # Finally
-    return check_parent_element_type(element_operands, component, version)
+    return check_defined_base_path(element_operands, component, version)
 
 
 def check_base_definition(element_operands, component, version):
@@ -53,35 +44,6 @@ def check_defined_base_path(element_operands, component, version):
     return {}
 
 
-def check_parent_element(element_operands, component, version):
-    element_key = str(*element_operands.keys())
-    resource_type = element_key.split('.')[-2]
-    parent_element_definition = json.loads(get_definition(resource_type, version))
-
-    sub_element = resource_type + '.' + element_key.split('.')[-1]
-    return search_definition(parent_element_definition, sub_element, component)
-
-
-def check_parent_element_type(element_operands, component, version):
-    element_key = str(*element_operands.keys())
-    resource_type = element_key.split('.')[0]
-    base_definition = json.loads(get_definition(resource_type, version))
-
-    parent_element = element_key.rsplit('.', 1)[0]
-    element_base_definition = search_definition(base_definition, parent_element, 'type')
-    for type_entry in element_base_definition:
-        if 'code' in type_entry:
-            resource_type = type_entry['code']
-            sub_element_base_definition = json.loads(get_definition(resource_type, version))
-            sub_element = resource_type + '.' + element_key.split('.')[-1]
-            element_base_component = search_definition(sub_element_base_definition, sub_element, component)
-            # First match, return.  TODO not sure about this, test it throughly...
-            if element_base_component != {}:
-                return element_base_component
-
-    return {}
-
-
 def get_element_base_path(element_operands):
     left_element = tuple(*element_operands.values())[0]
     right_element = tuple(*element_operands.values())[1]
@@ -90,8 +52,8 @@ def get_element_base_path(element_operands):
             left_element and right_element and \
             (left_element['base'] != right_element['base']):
         raise ValueError('Corresponding elements do not have the same base path definition\n\n' +
-                         'Left element -->\n\n' + left_element +
-                         'Right element -->\n\n' + right_element)
+                         'Left element -->\n\n' + str(left_element) +
+                         'Right element -->\n\n' + str(right_element))
 
     if 'base' in left_element:
         return left_element['base']
@@ -107,10 +69,10 @@ def search_definition(base_definition, element, component):
         return {}
     if 'snapshot' not in base_definition:
         raise ValueError('Snapshot is missing from base definition.\n\nBase definition -->\n\n' +
-                         base_definition)
+                         str(base_definition))
     if 'element' not in base_definition['snapshot']:
         raise ValueError('No elements found in base definition.\n\nBase definition -->\n\n' +
-                         base_definition)
+                         str(base_definition))
 
     for e in base_definition['snapshot']['element']:
         if 'id' in e and e['id'].lower() == element.lower():
