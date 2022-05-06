@@ -31,9 +31,9 @@ def test_get_profile_url_valid(resource_type, version, fhir_version_expected):
     assert output_data == expected_data
 
 
-def test_get_profile_url_invalid(data_primitive_invalid):
+def test_get_profile_url_invalid(data_basic_primitive):
     with pytest.raises(ValueError) as exception_info:
-        base_definitions.get_profile_url(data_primitive_invalid, data_primitive_invalid)
+        base_definitions.get_profile_url(data_basic_primitive, data_basic_primitive)
     assert 'Unknown FHIR version' in str(exception_info)
 
 
@@ -175,3 +175,5 @@ def test_get_base_component_check_defined_base_path_found(data_left_right_elemen
                                                       '3.0.2')
     expected_data = 0
     assert output_data == expected_data
+
+

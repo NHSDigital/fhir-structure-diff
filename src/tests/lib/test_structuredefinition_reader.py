@@ -52,9 +52,9 @@ def test_check_profile_invalid(data_invalid_no_empty_dict):
     assert 'Unexpected data types for element diff' in str(exception_info)
 
 
-def test_align_element_invalid_view(data_dicts, data_primitive_invalid):
+def test_align_element_invalid_view(data_dicts, data_basic_primitive):
     with pytest.raises(ValueError) as exception_info:
-        structuredefinition_reader.check_profile(data_dicts, data_primitive_invalid)
+        structuredefinition_reader.check_profile(data_dicts, data_basic_primitive)
     assert 'section found profile' in str(exception_info)
 
 

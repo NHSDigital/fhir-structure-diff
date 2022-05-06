@@ -50,13 +50,16 @@ def data_snapshot_element_choices() -> dict:
     return json.load(test_data)
 
 
-@pytest.fixture(params=[[], {}, None])
-def data_input_empty(request):
+@pytest.fixture(params=[[], None, False])
+def data_input_empty_no_dict(request):
     return request.param
 
 
-@pytest.fixture(params=[[], None])
-def data_input_empty_no_dict(request):
+@pytest.fixture(params=[
+    lazy_fixture('data_input_empty_no_dict'),
+    {}
+])
+def data_input_empty(request):
     return request.param
 
 
@@ -64,18 +67,16 @@ def data_input_empty_no_dict(request):
     'abc',
     123,
     True,
-    False,
     ('not', 'json'),
-    ''
     '2.0.1'
 ])
-def data_primitive_invalid(request):
+def data_basic_primitive(request):
     return request.param
 
 
 @pytest.fixture(params=[
     lazy_fixture('data_input_empty'),
-    lazy_fixture('data_primitive_invalid')
+    lazy_fixture('data_basic_primitive')
 ])
 def data_invalid(request):
     return request.param
@@ -83,7 +84,7 @@ def data_invalid(request):
 
 @pytest.fixture(params=[
     lazy_fixture('data_input_empty_no_dict'),
-    lazy_fixture('data_primitive_invalid')
+    lazy_fixture('data_basic_primitive')
 ])
 def data_invalid_no_empty_dict(request):
     return request.param
@@ -320,6 +321,24 @@ def data_left_right_elements_operands_right_base_path():
 
 
 @pytest.fixture
+def data_left_right_elements_operands_right_base_path_left_pretty():
+    return \
+        """{
+  "id": "AllergyIntolerance.extension",
+  "path": "AllergyIntolerance.extension",
+  "slicing": {
+    "discriminator": [
+      {
+        "path": "url",
+        "type": "value"
+      }
+    ],
+    "rules": "open"
+  }
+}"""
+
+
+@pytest.fixture
 def data_left_right_elements_operands_non_matching_base_path():
     return \
         {
@@ -384,5 +403,103 @@ def data_diff_elements_valid():
 def data_dicts(request):
     return request.param
 
-# 'slicing'
-# 'AllergyIntolerance.extension'
+
+@pytest.fixture
+def data_diff_operands_right_base_path():
+    return \
+        """ {  
++  "base": {  
++    "max": "*",  
++    "min": 0,  
++    "path": "DomainResource.extension"  
++  },  
+   "id": "AllergyIntolerance.extension",  
+   "path": "AllergyIntolerance.extension",  
+   "slicing": {  
+     "discriminator": [  
+       {  
+         "path": "url",  
+         "type": "value"  
+       }  
+     ],  
+     "rules": "open"  
+   }  
+ }  
+"""
+
+
+@pytest.fixture
+def data_operands_right_base_path_left():
+    return \
+        [
+            '{',
+            '  "id": "AllergyIntolerance.extension",',
+            '  "path": "AllergyIntolerance.extension",',
+            '  "slicing": {',
+            '    "discriminator": [',
+            '      {',
+            '        "path": "url",',
+            '        "type": "value"',
+            '      }',
+            '    ],',
+            '    "rules": "open"',
+            '  }',
+            '}'
+        ]
+
+
+@pytest.fixture
+def data_operands_right_base_path_right():
+    return \
+        [
+            '{',
+            '  "base": {',
+            '    "max": "*",',
+            '    "min": 0,',
+            '    "path": "DomainResource.extension"',
+            '  },',
+            '  "id": "AllergyIntolerance.extension",',
+            '  "path": "AllergyIntolerance.extension",',
+            '  "slicing": {',
+            '    "discriminator": [',
+            '      {',
+            '        "path": "url",',
+            '        "type": "value"',
+            '      }',
+            '    ],',
+            '    "rules": "open"',
+            '  }',
+            '}'
+        ]
+
+
+@pytest.fixture
+def data_component_diff_allergyintolerance_results():
+    return \
+        {
+            'AllergyIntolerance.extension':
+                {
+                    'slicing':
+                        {
+                            'table_result': ('Match', 'Match'),
+                            'match': '{\n  "discriminator": [\n    {\n      "path": "url",\n      "type": "value"\n    }\n  ],\n  "rules": "open"\n}',
+                            'component_diff': {},
+                            'base': '```json\n{\n  "description": "Extensions are always sliced by (at least) url",\n  "discriminator": [\n    {\n      "path": "url",\n      "type": "value"\n    }\n  ],\n  "rules": "open"\n}\n```'
+                        }
+                }
+        }
+
+
+@pytest.fixture
+def data_single_element():
+    return \
+        {
+            "differential": {
+                "element": [
+                    {
+                        "id": "AllergyIntolerance.extension",
+                        "max": "1"
+                    }
+                ]
+            }
+        }

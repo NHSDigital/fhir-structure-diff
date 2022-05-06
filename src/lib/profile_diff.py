@@ -109,15 +109,15 @@ def object_component_diff(left, right, base):
                (NOT_DEFINED_RESULT, NOTHING_TO_DIFF)
 
     else:
-        raise ValueError("Unable to compare (object) component values'" + left + "' and '" +
-                         right + "', where base component is '" + base + "'")
+        raise ValueError("Unable to compare (object) component values'" + str(left) + "' and '" +
+                         str(right) + "', where base component is '" + str(base) + "'")
 
 
 def primitive_component_diff(left, right, base, component_key):
     if base == {}:
         base = ''
 
-    if left == right == base:
+    if left == right == base and left and right:
         return SAME_AS_BASE_RESULT, SAME_AS_BASE_RESULT
 
     elif left == right and left and right:
