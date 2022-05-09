@@ -99,18 +99,16 @@ def object_component_diff(left, right, base):
                (DIFF_RESULT, DIFF_RESULT)
 
     elif left and not right:
-        # return json_diff(left, base), \
         return json_pretty(left), \
                (NOTHING_TO_DIFF, NOT_DEFINED_RESULT)
 
     elif right and not left:
-        # return json_diff(base, right), \
         return json_pretty(right), \
                (NOT_DEFINED_RESULT, NOTHING_TO_DIFF)
 
     else:
-        raise ValueError("Unable to compare (object) component values'" + str(left) + "' and '" +
-                         str(right) + "', where base component is '" + str(base) + "'")
+        raise ValueError("Unable to compare (object) component values, where left is: '" + str(left) +
+                         "' and right is: '" + str(right) + "', and where base component is '" + str(base) + "'")
 
 
 def primitive_component_diff(left, right, base, component_key):
@@ -124,15 +122,16 @@ def primitive_component_diff(left, right, base, component_key):
         return MATCH_WITH_VALUE_RESULT.replace('{component}', component_key) + str(left), \
                MATCH_WITH_VALUE_RESULT.replace('{component}', component_key) + str(right)
 
-    elif left == {} and right:
+    elif left == {} and (right or right == 0):
         return NOT_DEFINED_RESULT, right
 
-    elif right == {} and left:
+    elif right == {} and (left or left == 0):
         return left, NOT_DEFINED_RESULT
 
     else:
-        raise ValueError("Unable to compare (primitive) component values '" + str(left) + "' and '" +
-                         str(right) + "', where base component is '" + str(base) + "'")
+        raise ValueError("Unable to compare (primitive) component values for " + str(component_key).upper() +
+                         ", where left is: '" + str(left) + "' and right is: '" + str(right) +
+                         "', and where base component is '" + str(base) + "'")
 
 
 def list_diff(left, right) -> str:
@@ -163,3 +162,4 @@ def json_pretty(data):
         indent=2,
         sort_keys=True
     )
+
