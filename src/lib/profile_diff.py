@@ -20,8 +20,8 @@ BASE_NOT_DEFINED_IS_SLICE_RESULT = '"{component}" is a custom slice and therefor
 
 
 def element_diff(left, right):
-    cc_element_list = [e['id'] for e in left['differential']['element'] if 'id' in e]
-    gpc_element_list = [e['id'] for e in right['differential']['element'] if 'id' in e]
+    cc_element_list = [e['path'] for e in left['differential']['element'] if 'path' in e]
+    gpc_element_list = [e['path'] for e in right['differential']['element'] if 'path' in e]
 
     return list_diff(cc_element_list, gpc_element_list)
 
@@ -129,9 +129,10 @@ def primitive_component_diff(left, right, base, component_key):
         return left, NOT_DEFINED_RESULT
 
     else:
-        raise ValueError("Unable to compare (primitive) component values for " + str(component_key).upper() +
-                         ", where left is: '" + str(left) + "' and right is: '" + str(right) +
-                         "', and where base component is '" + str(base) + "'")
+        return NOT_DEFINED_RESULT, NOT_DEFINED_RESULT
+#        raise ValueError("Unable to compare (primitive) component values for " + str(component_key).upper() +
+#                         ", where left is: '" + str(left) + "' and right is: '" + str(right) +
+#                         "', and where base component is '" + str(base) + "'")
 
 
 def list_diff(left, right) -> str:

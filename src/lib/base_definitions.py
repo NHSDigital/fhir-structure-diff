@@ -48,12 +48,12 @@ def get_element_base_path(element_operands):
     left_element = tuple(*element_operands.values())[0]
     right_element = tuple(*element_operands.values())[1]
 
-    if 'base' in left_element and 'base' in right_element and \
-            left_element and right_element and \
-            (left_element['base'] != right_element['base']):
-        raise ValueError('Corresponding elements do not have the same base path definition\n\n' +
-                         'Left element -->\n\n' + str(left_element) +
-                         'Right element -->\n\n' + str(right_element))
+#    if 'base' in left_element and 'base' in right_element and \
+#            left_element and right_element and \
+#            (left_element['base'] != right_element['base']):
+#        raise ValueError('Corresponding elements do not have the same base path definition\n\n' +
+#                         'Left element -->\n\n' + str(left_element) +
+#                         'Right element -->\n\n' + str(right_element))
 
     if 'base' in left_element:
         return left_element['base']
@@ -75,7 +75,7 @@ def search_definition(base_definition, element, component):
                          str(base_definition))
 
     for e in base_definition['snapshot']['element']:
-        if 'id' in e and e['id'].lower() == element.lower():
+        if 'path' in e and e['path'].lower() == element.lower():
             if component in e.keys():
                 return e[component]
 

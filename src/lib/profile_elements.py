@@ -7,7 +7,7 @@ def extract_elements(profile) -> list:
 
 
 def extract_diff_elements(profile) -> dict:
-    return dict(zip([e['id'] for e in profile['differential']['element'] if 'id' in e],
+    return dict(zip([e['path'] for e in profile['differential']['element'] if 'path' in e],
                     [e for e in profile['differential']['element']]))
 
 
@@ -27,9 +27,9 @@ def add_snapshot_elements_to_diff(profile, diff_elements) -> dict:
 
     for de in diff_elements.values():
         for e in profile['snapshot']['element']:
-            if 'id' in e \
-                    and 'id' in de \
-                    and de['id'] == e['id']:
+            if 'path' in e \
+                    and 'path' in de \
+                    and de['path'] == e['path']:
                 de['base'] = e['base']
 
     return diff_elements
